@@ -30,6 +30,10 @@ const usuariosSchema = new Schema({
     img: {
         type: String,
     },
+    online: {
+        type: Boolean,
+        default: false
+    },
     estado: {
         type: Boolean,
         default: true

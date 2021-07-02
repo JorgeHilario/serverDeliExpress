@@ -40,6 +40,10 @@ const restaurantsSchema = new Schema({
         type: Boolean,
         default: false
     },
+    estado: {
+        type: Boolean,
+        default: true
+    },
     registrado:{
         type: Date,
         default: Date.now

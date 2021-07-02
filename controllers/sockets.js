@@ -8,10 +8,21 @@ const restaurantConectado = async (uid) => {
     const restaurant = await Restaurant.findById(uid)
     restaurant.online = true;
     await restaurant.save();
-
+ 
     return restaurant;
 
 }
+
+const usuarioConectado = async (uid) =>{
+
+    const usuario = await Usuario.findById(uid)
+    usuario.online = true;
+
+    await usuario.save();
+
+    return usuario;
+}
+
 
 const getPlatillosRestaurant = async ( id ) => {
 
@@ -61,5 +72,6 @@ module.exports = {
     actualizarDisponible,
     getRestaurantes,
     restaurantConectado,
-    getPlatillosRestaurant
+    getPlatillosRestaurant,
+    usuarioConectado
 }

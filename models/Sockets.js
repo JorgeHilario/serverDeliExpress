@@ -1,5 +1,5 @@
 
-const {getPlatillos, actualizarDisponible, getRestaurantes, restaurantConectado, getPlatillosRestaurant} = require("../controllers/sockets");
+const {getPlatillos, actualizarDisponible, getRestaurantes, usuarioConectado, restaurantConectado, getPlatillosRestaurant} = require("../controllers/sockets");
 const { comprobarJWT } = require("../helpers/generarJWT");
 
 class Sockets {
@@ -15,17 +15,25 @@ class Sockets {
         //ON connection
         this.io.on('connection', async (socket) => {
 
-            const [valido, uid] = comprobarJWT(socket.handshake.query['x-token']);
+            const [valido, uidRestaurant] = comprobarJWT(socket.handshake.query['x-token']);
 
-            console.log('Conectado')
+            const [userValido, uidUser] = comprobarJWT(socket.handshake.query['x-token']);
+
+            console.log(valido)
 
             if(!valido){
                 console.log('Socket no identificado');
                 return socket.disconnect();
             }
 
-            await restaurantConectado(uid);
+            await restaurantConectado(uidRestaurant);
 
+
+            if(!userValido){
+                console.log('Socket no identificado')
+            }
+            
+            await usuarioConectado(uidUser)
 
             //TODO: Recibir un nuevo pedidio de cliente
             
@@ -39,7 +47,7 @@ class Sockets {
 
 
             //TODO: Emitir toda lista de platillos por restaurant
-            socket.emit('platillos-restaurant', await getPlatillosRestaurant(uid))
+            socket.emit('platillos-restaurant', await getPlatillosRestaurant(uidRestaurant))
 
 
             //TODO: Actualizar el estado disponible de algun platillo por medio de su ID
@@ -47,7 +55,7 @@ class Sockets {
                 
                 const platillo = await actualizarDisponible(payload);
                 
-                this.io.emit('actualizar-disponible', await getPlatillosRestaurant(uid));
+                this.io.emit('actualizar-disponible', await getPlatillosRestaurant(uidRestaurant));
                 
             })
 
