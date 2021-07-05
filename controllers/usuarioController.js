@@ -102,11 +102,17 @@ exports.elimiarUsuario = async (req, res) => {
 exports.validarTokenUsuario = async (req, res) =>{
     
     const uid = req.uid;
-    //Generar el JWT
-    const token = await generarJWT( uid );
-
+ 
     //Obtener usuario por uid
     const usuario = await Usuario.findById( uid )
+
+    console.log('RENEWTOKEN', usuario);
+
+    const {tipo} = usuario; 
+
+    console.log('Tipo conectado: ', tipo)
+
+    const token = await generarJWT(uid, tipo);
 
     res.json({
         ok: true,

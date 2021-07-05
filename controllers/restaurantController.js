@@ -146,7 +146,7 @@ exports.renewToken = async (req, res) =>{
     console.log(tipo)
 
     //Generar el JWT
-    const token = await generarJWT(uid, usuario.tipo);
+    const token = await generarJWT(uid, tipo);
 
     const restaurant = await Restaurant.findById(uid)
 
