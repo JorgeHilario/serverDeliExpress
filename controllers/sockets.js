@@ -3,26 +3,34 @@ const Restaurant = require('../models/Restaurant');
 const Usuario = require('../models/Usuario');
 
 
-const restaurantConectado = async (uid) => {
+const usuarioConectado = async (uid, tipo) =>{
 
-    const restaurant = await Restaurant.findById(uid)
-    restaurant.online = true;
-    await restaurant.save();
- 
-    return restaurant;
+    if(tipo === 'Restaurante') {
 
+        const restaurant = await Restaurant.findById(uid)
+
+        console.log("este es el restaurant",restaurant)
+
+        restaurant.online = true;
+
+        await restaurant.save();
+
+        return restaurant;
+    }
+
+    if (tipo === 'Cliente'){
+
+        const cliente = await Usuario.findById(uid)
+
+        console.log('Este es el cliente', cliente)
+
+        cliente.online = true;
+
+        await cliente.save();
+
+        return cliente;
+    }
 }
-
-const usuarioConectado = async (uid) =>{
-
-    const usuario = await Usuario.findById(uid)
-    usuario.online = true;
-
-    await usuario.save();
-
-    return usuario;
-}
-
 
 const getPlatillosRestaurant = async ( id ) => {
 
@@ -71,7 +79,6 @@ module.exports = {
     getPlatillos,
     actualizarDisponible,
     getRestaurantes,
-    restaurantConectado,
     getPlatillosRestaurant,
     usuarioConectado
 }

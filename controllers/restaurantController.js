@@ -14,8 +14,6 @@ exports.nuevoRestaurant = async (req, res, next) => {
         
     const { nombre, direccion, email, password, categoria, descripcion, telefono} = new Restaurant(req.body);
 
-
-
     const result = await cloudinary.v2.uploader.upload(req.file.path)
 
     const newRestaurant = {
@@ -118,7 +116,7 @@ exports.loginRestaurant = async(req, res) => {
         }
 
         //Generar el JWT
-        const token = await generarJWT(restaurant.id);
+        const token = await generarJWT(restaurant.id, restaurant.tipo); 
 
         res.json({
             msg: 'Login OK',
@@ -138,8 +136,17 @@ exports.renewToken = async (req, res) =>{
 
     const uid = req.uid;
 
+    const usuario = await Restaurant.findById(uid);
+
+    console.log('RENEWTOKEN', usuario);
+
+    const {tipo, nombre} = usuario;
+
+    console.log(nombre)
+    console.log(tipo)
+
     //Generar el JWT
-    const token = await generarJWT(uid);
+    const token = await generarJWT(uid, usuario.tipo);
 
     const restaurant = await Restaurant.findById(uid)
 

@@ -33,7 +33,7 @@ const validarJWTUsuario = async (req, res, next) =>{
             })
         }
 
-        req.usuario = usuario;
+        req.uid = uid;
         next();
 
     } catch (error) {
@@ -47,11 +47,12 @@ const validarJWTUsuario = async (req, res, next) =>{
 }
 
 const validarJWTRestaurant = async (req, res, next) =>{
+    
+    
+    const token = req.header('x-token-restaurant');
 
     try {
         
-        const token = req.header('x-token');
-
         if(!token){
 
             return res.status(401).json({

@@ -34,9 +34,9 @@ const usuariosSchema = new Schema({
         type: Boolean,
         default: false
     },
-    estado: {
-        type: Boolean,
-        default: true
+    tipo:{
+        type: String,
+        default: "Cliente"
     },
     registrado:{
         type: Date,

@@ -40,9 +40,9 @@ const restaurantsSchema = new Schema({
         type: Boolean,
         default: false
     },
-    estado: {
-        type: Boolean,
-        default: true
+    tipo:{
+        type: String,
+        default: "Restaurante"
     },
     registrado:{
         type: Date,
