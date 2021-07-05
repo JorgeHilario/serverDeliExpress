@@ -4,7 +4,7 @@ const Restaurant = require('../models/Restaurant');
 
 const validarJWTUsuario = async (req, res, next) =>{
 
-    const token = req.header('x-token-usuario')
+    const token = req.header('x-token')
 
     if( !token ) {
         return res.status(401).json({
@@ -49,7 +49,7 @@ const validarJWTUsuario = async (req, res, next) =>{
 const validarJWTRestaurant = async (req, res, next) =>{
     
     
-    const token = req.header('x-token-restaurant');
+    const token = req.header('x-token');
 
     try {
         
