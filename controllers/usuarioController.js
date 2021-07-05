@@ -114,9 +114,11 @@ exports.validarTokenUsuario = async (req, res) =>{
 
     const token = await generarJWT(uid, tipo);
 
+    const user = await Usuario.findById(uid);
+
     res.json({
         ok: true,
-        usuario,
+        user,
         token
     })
 }

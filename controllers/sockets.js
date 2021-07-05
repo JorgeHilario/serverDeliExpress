@@ -5,6 +5,8 @@ const Usuario = require('../models/Usuario');
 
 const usuarioConectado = async (uid, tipo) =>{
 
+    console.log('TIPO CONECTADO', tipo)
+
     if(tipo === 'Restaurante') {
 
         const restaurant = await Restaurant.findById(uid)
