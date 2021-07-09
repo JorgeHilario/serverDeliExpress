@@ -138,8 +138,6 @@ exports.renewToken = async (req, res) =>{
 
     const usuario = await Restaurant.findById(uid);
 
-    console.log('RENEWTOKEN', usuario);
-
     const {tipo, nombre} = usuario;
 
     console.log(nombre)

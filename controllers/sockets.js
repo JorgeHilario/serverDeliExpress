@@ -5,13 +5,9 @@ const Usuario = require('../models/Usuario');
 
 const usuarioConectado = async (uid, tipo) =>{
 
-    console.log('TIPO CONECTADO', tipo)
-
     if(tipo === 'Restaurante') {
 
         const restaurant = await Restaurant.findById(uid)
-
-        console.log("este es el restaurant",restaurant)
 
         restaurant.online = true;
 
@@ -23,8 +19,6 @@ const usuarioConectado = async (uid, tipo) =>{
     if (tipo === 'Cliente'){
 
         const cliente = await Usuario.findById(uid)
-
-        console.log('Este es el cliente', cliente)
 
         cliente.online = true;
 
@@ -58,6 +52,7 @@ const actualizarDisponible = async (data) => {
     try {
 
         const platillo = Platillo.findOneAndUpdate({_id: id}, {existencia: existencia}, {new: true})
+        
         return platillo;
 
     } catch (error) {

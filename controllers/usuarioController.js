@@ -106,19 +106,11 @@ exports.validarTokenUsuario = async (req, res) =>{
     //Obtener usuario por uid
     const usuario = await Usuario.findById( uid )
 
-    console.log('RENEWTOKEN', usuario);
-
-    const {tipo} = usuario; 
-
-    console.log('Tipo conectado: ', tipo)
-
-    const token = await generarJWT(uid, tipo);
-
-    const user = await Usuario.findById(uid);
+    const token = await generarJWT(uid, usuario.tipo);
 
     res.json({
         ok: true,
-        user,
+        usuario,
         token
     })
 }
@@ -126,6 +118,8 @@ exports.validarTokenUsuario = async (req, res) =>{
 exports.login = async (req, res = response) =>{
 
     const { email, password } = req.body;
+
+    console.log(req.body)
 
     try {
 
@@ -139,12 +133,6 @@ exports.login = async (req, res = response) =>{
             })
         }
 
-        //SI el usuario esta activo
-        // if(!usuarioDB.estado){
-        //     return res.json({
-        //         msg:'Usuario o contraseña incorrecta - estado: false'
-        //     })
-        // }
 
         //Verificar la contraseña
         const validPassword = bcryptjs.compareSync( password, usuarioDB.password)
@@ -157,7 +145,7 @@ exports.login = async (req, res = response) =>{
         }
 
         //Generar el JWT
-        const token = await generarJWT(usuarioDB.id);
+        const token = await generarJWT(usuarioDB.id, usuarioDB.tipo);
 
 
         res.json({
