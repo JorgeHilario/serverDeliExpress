@@ -26,12 +26,10 @@ class Sockets {
     
                 await usuarioConectado(uid, tipo)
 
-                if(tipo === 'Cliente' || tipo === 'Restaurante'){
-                     //TODO: Emitir lista de restaurantes
-                    this.io.emit('lista-restaurantes', await getRestaurantes())
-                }
                
-
+                //TODO: Emitir lista de restaurantes
+                this.io.emit('lista-restaurantes', await getRestaurantes())
+                
 
                 //TODO: Emitir toda la lista de platillos
                 this.io.emit('lista-platillos', await getPlatillos())

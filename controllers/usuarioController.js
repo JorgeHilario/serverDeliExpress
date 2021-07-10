@@ -104,9 +104,16 @@ exports.validarTokenUsuario = async (req, res) =>{
     const uid = req.uid;
  
     //Obtener usuario por uid
-    const usuario = await Usuario.findById( uid )
+    const user = await Usuario.findById( uid )
 
-    const token = await generarJWT(uid, usuario.tipo);
+    const {tipo, nombre} = user;
+
+    console.log(nombre)
+    console.log(tipo)
+
+    const token = await generarJWT(uid, tipo);
+
+    const usuario = await Usuario.findById(uid)
 
     res.json({
         ok: true,
