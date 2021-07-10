@@ -1,4 +1,3 @@
-const { restart } = require('nodemon');
 const Platillo = require('../models/Platillo');
 const Restaurant = require('../models/Restaurant');
 const Usuario = require('../models/Usuario');
