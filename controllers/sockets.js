@@ -1,3 +1,4 @@
+const { restart } = require('nodemon');
 const Platillo = require('../models/Platillo');
 const Restaurant = require('../models/Restaurant');
 const Usuario = require('../models/Usuario');
@@ -25,6 +26,19 @@ const usuarioConectado = async (uid, tipo) =>{
         await cliente.save();
 
         return cliente;
+    }
+}
+
+const usuarioDesconectado = async (uid, tipo) => {
+    
+    if(tipo === 'Restaurante'){
+        
+        const restaurant = await Restaurant.findById(uid)
+        restaurant.online = false;
+
+        await restaurant.save();
+
+        return restaurant;
     }
 }
 
@@ -77,5 +91,6 @@ module.exports = {
     actualizarDisponible,
     getRestaurantes,
     getPlatillosRestaurant,
-    usuarioConectado
+    usuarioConectado,
+    usuarioDesconectado
 }
