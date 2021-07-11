@@ -7,14 +7,16 @@ exports.nuevoUsuario = async(req, res) => {
 
     try {
 
-        const { nombre, apellido, email, password, telefono } = req.body;
+        const { nombre, apellido, email, password, telefono, online, tipo } = req.body;
 
         const newUsuario = {
             nombre,
             apellido,
             email,
             password,
-            telefono
+            telefono,
+            online,
+            tipo
         }
 
     
