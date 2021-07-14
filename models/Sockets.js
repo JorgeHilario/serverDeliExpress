@@ -27,6 +27,8 @@ class Sockets {
                 const usuario = await usuarioConectado(uid, tipo)
 
                 console.log('Se conectó ', usuario.nombre);
+
+                socket.join( uid );
                
                 //TODO: Emitir lista de restaurantes
                 this.io.emit('lista-restaurantes', await getRestaurantes())
@@ -39,26 +41,17 @@ class Sockets {
                 //TODO: Emitir toda lista de platillos por restaurant
                 socket.emit('platillos-restaurant', await getPlatillosRestaurant(uid))
 
-                
-                socket.on('platillos-usuario', async (payload)=>{
-                    console.log("RECIBIMOS UID de RESTAURANTE",payload)
-
-                    const {uid} = payload;
-
-                    this.io.emit('platillos-usuario', await getPlatillosRestaurant(uid))
-                })
-
 
                 //TODO: Actualizar el estado disponible de algun platillo por medio de su ID
                 socket.on('actualizar-disponible', async (payload) => {
-                    
+
                     const {restaurant} = payload;
 
-                    const plato = await actualizarDisponible(payload);
+                    const platillos = await actualizarDisponible(payload);
 
-                    this.io.emit('plato-actualizado', plato);
+                    this.io.emit('platos-actualizados', {platillos, restaurant});
                     
-                    this.io.emit('actualizar-disponible', await getPlatillosRestaurant(restaurant));
+                    this.io.to( payload.restaurant ).emit('actualizar-disponible', platillos);
                     
                 })
 

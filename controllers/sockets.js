@@ -60,20 +60,23 @@ const getPlatillos = async ( ) => {
 
 const actualizarDisponible = async (data) => {
 
-    const {id, existencia} = data;
+    const {id, existencia, restaurant} = data;
+
+    const query = {'restaurant': restaurant}
 
     try {
 
-        const platillo = Platillo.findOneAndUpdate({_id: id}, {existencia: existencia}, {new: true})
+        const platillo = await Platillo.findOneAndUpdate({_id: id}, {existencia: existencia}, {new: true})
         
-        return platillo;
+        const platillosActualizados = await Platillo.find(query);
+
+        return platillosActualizados;
+
 
     } catch (error) {
         console.log(error)
         return false;
     }
-
-    
     
 }
 

@@ -75,7 +75,7 @@ exports.obetenerPlatillosPorRestaurant = async (req, res) => {
     const {id} = req.params;
 
     try {
-        const platillo = await Platillo.findById(id)
+        const platillo = await Platillo.find({'restaurant':id})
        
         res.status(200).json({
             ok:true,
