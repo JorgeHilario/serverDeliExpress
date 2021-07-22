@@ -3,31 +3,13 @@ const Schema = mongoose.Schema;
 
 const cardsSchema = new Schema({
 
-    nombre:{
+    clienteStripe:{
         type: String,
-        required: true,
-        trim: true
-    },
-    tarjeta:{
-        type: Number,
-        required: true,
-        trim: true
-    },
-    mes:{
-        type: Number,
-        required: true
-    },
-    year:{
-        type: Number,
-        required: true
-    },
-    cvc:{
-        type: Number,
-        required: true
     },
     usuario:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Usuario'
+        type: Schema.Types.ObjectId,
+        ref: 'Usuario',
+        required: true
     },
     creado:{
         type: Date,

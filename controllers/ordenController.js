@@ -4,7 +4,7 @@ exports.nuevaOrden = async (req, res, next) => {
     Orden.init()
     console.log(req.body)
 
-    const { tiempoEntrega, completado, total, orden, creado } = new Orden(req.body)
+    const { tiempoEntrega,  orden} = new Orden(req.body)
 
     const newOrden = {
         tiempoEntrega,
@@ -39,6 +39,26 @@ exports.obtenerOrdenes = async (req, res, next) =>{
     }
 
 }
+
+
+exports.obtenerOrdenesID = async (req, res, next) =>{
+
+
+    const {id}  = req.params;
+
+    const query = {'para': id};
+    
+    try {
+        const ordenes = await Orden.find(query)
+        console.log(ordenes)
+        res.json(ordenes)
+    } catch (error) {
+        console.log(error)
+        next()
+    }
+
+}
+
 
 exports.actualizarOrden = async (req, res, next) => {
     try {

@@ -1,3 +1,4 @@
+const Orden = require('../models/Orden');
 const Platillo = require('../models/Platillo');
 const Restaurant = require('../models/Restaurant');
 const Usuario = require('../models/Usuario');
@@ -88,11 +89,26 @@ const getRestaurantes = async () =>{
     return restaurants;    
 }
 
+const guardarPedido = async (payload) =>{
+    
+    try {
+        const pedido = new Orden(payload);
+        await pedido.save();
+
+        return pedido;
+    } catch (error) {
+        console.log(error);
+
+        return false;
+    }
+}
+
 module.exports = {
     getPlatillos,
     actualizarDisponible,
     getRestaurantes,
     getPlatillosRestaurant,
     usuarioConectado,
-    usuarioDesconectado
+    usuarioDesconectado,
+    guardarPedido
 }

@@ -1,5 +1,5 @@
 
-const {getPlatillos, actualizarDisponible, getRestaurantes, getPlatillosRestaurant, usuarioConectado, usuarioDesconectado} = require("../controllers/sockets");
+const {getPlatillos, actualizarDisponible, getRestaurantes, getPlatillosRestaurant, usuarioConectado, usuarioDesconectado, guardarPedido} = require("../controllers/sockets");
 const { comprobarJWT } = require("../helpers/generarJWT");
 
 class Sockets {
@@ -57,7 +57,10 @@ class Sockets {
 
                 //TODO: Recibir un nuevo pedidio de cliente
                 socket.on('nuevo-pedido', async (payload) => {
-                    console.log(payload)
+                    
+                    const pedido = await guardarPedido(payload);
+
+                    this.io.to(payload.para).emit('nuevo-pedido', pedido);
                 })
 
             socket.on('disconnect', async ()=>{
