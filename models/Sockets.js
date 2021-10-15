@@ -24,9 +24,7 @@ class Sockets {
                     return socket.disconnect();
                 }
     
-                const usuario = await usuarioConectado(uid, tipo)
-
-                console.log('Se conectó ', usuario.nombre);
+                await usuarioConectado(uid, tipo)
 
                 socket.join( uid );
                
@@ -58,11 +56,14 @@ class Sockets {
                 //TODO: Recibir un nuevo pedidio de cliente
                 socket.on('nuevo-pedido', async (payload) => {
                     
+                    console.log('PAYLOAD SOCKET', payload)
+
                     const pedido = await guardarPedido(payload);
 
                     this.io.to(payload.para).emit('nuevo-pedido', pedido);
                 })
 
+                
             socket.on('disconnect', async ()=>{
                 console.log('desconectado')
 

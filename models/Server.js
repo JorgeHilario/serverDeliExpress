@@ -36,7 +36,7 @@ class Server {
         this.app.use('/restaurants', require('../routes/Restaurants'));
         this.app.use('/platillos', require('../routes/Platillos'));
         this.app.use('/login', require('../routes/Usuarios'));
-        this.app.use('/card', require('../routes/Cards'));
+        this.app.use('/direcciones', require('../routes/Direcciones'));
     }
 
     configurarSockets(){

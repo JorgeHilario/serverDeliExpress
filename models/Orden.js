@@ -13,7 +13,8 @@ const ordenesSchema = new Schema({
         required: true
     },
     tiempoEntrega:{
-        type: Number
+        type: Number,
+        default: 0
     },
     aceptado:{
         type: Boolean,

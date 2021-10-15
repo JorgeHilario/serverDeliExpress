@@ -1,25 +1,26 @@
 const Usuario = require('../models/Usuario');
 const bcryptjs = require('bcryptjs');
 const { generarJWT } = require('../helpers/generarJWT');
+const stripe = require("stripe")(process.env.SECRET_KEY);
 
 
 exports.nuevoUsuario = async(req, res) => {
 
+    let customer  = await stripe.customers.create({email: req.body.email});
+
     try {
 
-        const { nombre, apellido, email, password, telefono, online, tipo } = req.body;
+        const {email, password, nombre, apellido, telefono} = req.body;
 
-        const newUsuario = {
-            nombre,
-            apellido,
+        const newClient = {
             email,
             password,
+            nombre,
+            apellido,
             telefono,
-            online,
-            tipo
+            customerStripe: customer.id
         }
 
-    
         //verificar que no exista el correo
         const emailExist = await Usuario.findOne({email});
 
@@ -29,7 +30,9 @@ exports.nuevoUsuario = async(req, res) => {
             })
         }
 
-        const usuario = new Usuario(newUsuario);
+        
+
+        const usuario = new Usuario(newClient);
         
         //Encriptar contraseña
         const salt = bcryptjs.genSaltSync();

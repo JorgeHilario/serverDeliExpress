@@ -22,7 +22,7 @@ exports.nuevoPlatillo = async (req, res, next) => {
     
     const result = await cloudinary.uploader.upload(img)
     console.log(result)    
-
+ 
     const newPlatillo = new Platillo({
         nombre,  
         precio,

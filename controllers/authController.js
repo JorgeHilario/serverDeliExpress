@@ -2,6 +2,8 @@ const { response } = require("express");
 const bcryptjs = require('bcryptjs');
 const Usuario = require('../models/Usuario');
 const { generarJWT } = require("../helpers/generarJWT");
+const { googleVerify } = require("../helpers/google-verify");
+const stripe = require("stripe")(process.env.SECRET_KEY);
 
 exports.login = async (req, res = response) =>{
 
@@ -51,6 +53,64 @@ exports.login = async (req, res = response) =>{
     }
 
 }
+
+
+exports.googleSignIn = async ( req, res) => {
+
+    const {idToken} = req.body
+
+    try {
+
+        const {nombre, img, email, apellido} = await googleVerify(idToken);
+
+        let usuario = await Usuario.findOne({email});
+        let customer  = await stripe.customers.create({email: req.body.email});
+
+        if(!usuario){
+            //Crearlo
+            const data = {
+                nombre,
+                apellido,
+                email,
+                password: ':P',
+                img,
+                customerStripe: customer.id,
+                google: true,
+
+            }
+
+            usuario = new Usuario(data);
+            await usuario.save();
+        }
+
+        //Si el usuario en DB
+        if(!usuario.online){
+            return res.status(401).json({
+                msg: 'Usuario bloqueado'
+            })
+        }
+
+         //Generar el JWT
+         const token = await generarJWT(usuario.id);
+
+
+        res.json({
+            ok:true,
+            usuario,
+            token
+        })
+        
+    } catch (error) {
+        res.status(400).json({
+            ok:false,
+            msg:'Token no pudo ser verificado'
+        })
+    }
+
+   
+
+}
+
 
 exports.validarTokenUsuario = async (req, res) =>{
     

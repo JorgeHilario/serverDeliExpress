@@ -25,18 +25,25 @@ const usuariosSchema = new Schema({
     },
     telefono:{
         type: Number,
-        required: [true, 'Ingresa algun telefono']
+        
     },
     img: {
         type: String,
     },
     online: {
         type: Boolean,
-        default: false
+        default: true
     },
     tipo:{
         type: String,
         default: "Cliente"
+    },
+    customerStripe:{
+        type: String
+    },
+    google:{
+        type: Boolean,
+        default: false
     },
     registrado:{
         type: Date,

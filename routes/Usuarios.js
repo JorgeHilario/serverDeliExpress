@@ -4,6 +4,7 @@ const { Router } = require("express")
 const {nuevoUsuario, login, validarTokenUsuario} = require('../controllers/usuarioController');
 const { validarJWTUsuario } = require('../middlewares/validarJWT');
 const {validarCampos} = require('../middlewares/validations');
+const { googleSignIn } = require('../controllers/authController');
 
 const router = Router();
 
@@ -21,6 +22,12 @@ router.post('/', [
     check('password', 'La contraseña es necesaria').not().isEmpty(),
     validarCampos
 ],login)
+
+
+router.post('/google',[
+    check('idToken', 'Es necesario un token de google').not().isEmpty(),
+    validarCampos
+], googleSignIn)
 
 
 //Revalidar token

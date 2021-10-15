@@ -1,4 +1,5 @@
 const Orden = require('../models/Orden');
+const stripe = require("stripe")(process.env.SECRET_KEY);
 
 exports.nuevaOrden = async (req, res, next) => {
     Orden.init()
@@ -82,4 +83,42 @@ exports.obtenerOrden = async (req,res,next) => {
     } catch (error) {
         console.log(error)
     }
+}
+
+exports.realizarPago = async (req, res) => {
+
+    const pago = req.body;
+
+
+    let amount = 0;
+
+    {pago.forEach((item)=>{
+        amount += item.precio * item.cantidad;
+    })}
+
+
+
+    const {id} = req.params;
+
+    //Crear una llave para el usuario 
+    const ephemeralKey = await stripe.ephemeralKeys.create(
+        {customer: id},
+        {apiVersion: '2020-08-27'}
+    )
+    
+
+    //Crear el intento de pago con el monto de pago, tipo de moneda, y usuario
+   
+    const paymentIntent = await stripe.paymentIntents.create({
+        amount: (amount+25) * 100,
+        currency: 'mxn',
+        customer: id
+    });
+
+
+    res.json({
+        paymentIntent: paymentIntent.client_secret,
+        customer: id,
+        ephemeralKey: ephemeralKey.secret
+    });
 }
